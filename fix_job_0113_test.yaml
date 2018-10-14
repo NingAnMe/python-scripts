@@ -1,0 +1,15 @@
+INFO:
+  degx: 1
+  degy: 1
+  sat: FY3C
+  sensor: VIRR
+  window: 128
+  ymd: '20180101'
+PATH:
+  ipath:
+  - /nas03/GSICS_TEST/Fix/SourceData/FENGYUN-3C/VIRR/L1/ORBIT/201801/FY3C_VIRRX_GBAL_L1_20180101_0005_1000M_MS.HDF
+  opath: /nas03/GSICS_TEST/Fix/SupportData/Preprocessing/FY3C+VIRR/128_L1/201801/FY3C_VIRR_20180101_0005_Dome_C.H5
+SITE:
+  lat: -74.5
+  lon: 123.0
+  name: Dome_C

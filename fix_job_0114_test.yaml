@@ -1,0 +1,14 @@
+INFO:
+  sat: FY3A
+  sensor: VIRR
+  window: 19   (cfg.pairs.sat.cal_window)
+  ymd: '20150101'
+  hm: '1435'
+PATH:
+  ipath:
+  - /nas03/GSICS_TEST/Fix/SupportData/Preprocessing/FY3A+VIRR/128_L1/201501/FY3A_VIRR_20150101_1435_Dome_C.H5
+  opath: /nas03/GSICS_TEST/Fix/SupportData/Preprocessing/FY3A+VIRR/19_L2/201501/FY3A_VIRR_20150101_1435_Dome_C.H5
+SITE:
+  lat: -74.5
+  lon: 123.0
+  name: Dome_C

@@ -1,0 +1,30 @@
+Traceback (most recent call last):
+  File "/home/gsics/pysrc2/OM/GSICS/cross/cross_c04_time_series_bias.py", line 991, in <module>
+    run(satPair, date_start, date_end)
+  File "/home/gsics/pysrc2/OM/GSICS/cross/cross_c04_time_series_bias.py", line 160, in run
+    each)
+  File "/home/gsics/pysrc2/OM/GSICS/cross/cross_c04_time_series_bias.py", line 433, in plot_abc
+    plt.tight_layout()
+  File "/opt/gsics_LIB/anaconda2/lib/python2.7/site-packages/matplotlib/pyplot.py", line 1344, in tight_layout
+    fig.tight_layout(pad=pad, h_pad=h_pad, w_pad=w_pad, rect=rect)
+  File "/opt/gsics_LIB/anaconda2/lib/python2.7/site-packages/matplotlib/figure.py", line 2030, in tight_layout
+    pad=pad, h_pad=h_pad, w_pad=w_pad, rect=rect)
+  File "/opt/gsics_LIB/anaconda2/lib/python2.7/site-packages/matplotlib/tight_layout.py", line 351, in get_tight_layout_figure
+    pad=pad, h_pad=h_pad, w_pad=w_pad)
+  File "/opt/gsics_LIB/anaconda2/lib/python2.7/site-packages/matplotlib/tight_layout.py", line 130, in auto_adjust_subplotpars
+    if ax.get_visible()])
+  File "/opt/gsics_LIB/anaconda2/lib/python2.7/site-packages/matplotlib/axes/_base.py", line 4019, in get_tightbbox
+    bb_yaxis = self.yaxis.get_tightbbox(renderer)
+  File "/opt/gsics_LIB/anaconda2/lib/python2.7/site-packages/matplotlib/axis.py", line 1090, in get_tightbbox
+    ticks_to_draw = self._update_ticks(renderer)
+  File "/opt/gsics_LIB/anaconda2/lib/python2.7/site-packages/matplotlib/axis.py", line 974, in _update_ticks
+    tick_tups = list(self.iter_ticks())
+  File "/opt/gsics_LIB/anaconda2/lib/python2.7/site-packages/matplotlib/axis.py", line 923, in iter_ticks
+    minorLocs = self.minor.locator()
+  File "/opt/gsics_LIB/anaconda2/lib/python2.7/site-packages/matplotlib/ticker.py", line 1746, in __call__
+    return self.tick_values(vmin, vmax)
+  File "/opt/gsics_LIB/anaconda2/lib/python2.7/site-packages/matplotlib/ticker.py", line 1755, in tick_values
+    return self.raise_if_exceeds(locs)
+  File "/opt/gsics_LIB/anaconda2/lib/python2.7/site-packages/matplotlib/ticker.py", line 1465, in raise_if_exceeds
+    raise RuntimeError(msg)
+RuntimeError: Locator attempting to generate 1003 ticks from -0.002 to 2.0020000000000002: exceeds Locator.MAXTICKS
