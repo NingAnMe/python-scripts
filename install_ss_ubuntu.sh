@@ -4,7 +4,7 @@
 
 server="123.123.123.123"  # your vps ip
 post=443  # post
-password="ninganme12345"  # password
+password="password"  # password
 
 
 echo "==================================="
