@@ -5,58 +5,83 @@
 @Author  : AnNing
 """
 import os
-import sys
-from PB.DRC.pb_drc_MVISR import ReadMvisrL1
-from PB.pb_io import get_files_by_ymd
+
 import numpy as np
 from DV import dv_map
-from configobj import ConfigObj
-from lib_gsics.lib_gsics_path import get_pics_cfg_path
+from PB.DRC import ReadMersiL1
 
 
-config_path = get_pics_cfg_path()
-config_file = os.path.join(config_path, 'pics.cfg')
-config = ConfigObj(config_file)
-fix_sites = config['SITE_LIST']
-
-lonlatlocation = []
-for site in fix_sites:
-    fix_lat = float(fix_sites[site][0])
-    fix_lon = float(fix_sites[site][1])
-    lonlatlocation.append((fix_lon, fix_lat, site))
+import pickle
 
 
-def main(path, ymd):
+def main():
 
-    in_files = get_files_by_ymd(path, ymd, ymd, ext='.HDF', pattern_ymd='.*(\d{8})_\d{4}\.HDF')
-    for f in in_files:
-        plot_one_file_origin(f)
-        plot_one_file(f)
+    pickle_file = 'fy3d_mersi_global.pickle'
+    if not os.path.isfile(pickle_file):
+        dir_path = "/home/gsics/nas03/CMA_GSICS/SourceData/FENGYUN-3D/MERSI/L1/ORBIT/2018/20180630"
+        times = ['0800', '0805', '0810', '0815', '0820', '0825',
+                 '0830', '0835', '0840', '0845', '0850', '0855',
+                 '0900', '0905', '0910', '0915', '0920', '0925',
+                 '0930', '0935', '0940', '0945', '0950', '0955',
+                 '1000', '1005', '1010', '1015', '1020', '1025',
+                 '1030', '1035', '1040', '1045', '1050', '1055',
+                 '1100', '1110', '1115', '1120', '1125', '1130',
+                 ]
 
+        file_name = 'FY3D_MERSI_GBAL_L1_20180630_{}_1000M_MS.HDF'
+        lon_all = list()
+        lat_all = list()
+        tbb_all = list()
+        for i in times:
+            in_file = os.path.join(dir_path, file_name.format(i))
+            print in_file
+            read_mersi_l1 = ReadMersiL1(in_file)
 
-def plot_one_file_origin(f):
-    name = os.path.basename(f).replace('.HDF', '.PNG')
-    data = ReadMvisrL1(f)
-    lat = data.get_latitude_originality()
-    lon = data.get_longitude_originality()
-    print lat.shape
-    count = np.full_like(lat, 1)
-    out_file = os.path.join('global_plot_origin', name)
-    title = name
-    print f
-    plot_map_project(lat, lon, count, out_file, title)
+            lon = read_mersi_l1.get_longitude()
+            lat = read_mersi_l1.get_latitude()
+            tbb = read_mersi_l1.get_tbb()['CH_24']
 
+            for d in [lat, lon, tbb]:
+                index = np.isfinite(d)
+                lat = lat[index]
+                lon = lon[index]
+                tbb = tbb[index]
 
-def plot_one_file(f):
-    name = os.path.basename(f).replace('.HDF', '.PNG')
-    data = ReadMvisrL1(f)
-    lat = data.get_latitude()
-    lon = data.get_longitude()
-    count = np.full_like(lat, 1)
-    out_file = os.path.join('global_plot', name)
-    title = 'test'
-    print f
-    plot_map_project(lat, lon, count, out_file, title)
+            lon_all = np.append(lon_all, lon)
+            lat_all = np.append(lat_all, lat)
+            tbb_all = np.append(tbb_all, tbb)
+
+            print(lon_all.shape, lat_all.shape, tbb_all.shape)
+
+        data = {
+            'lon': lon_all,
+            'lat': lat_all,
+            'tbb': tbb_all,
+        }
+
+        with open(pickle_file, 'wb') as f:
+            pickle.dump(data, f)
+    else:
+        with open(pickle_file, 'rb') as f:
+            data = pickle.load(f)
+
+    lat = data['lat']
+    lon = data['lon']
+    tbb = data['tbb']
+
+    print(lat.shape, lon.shape, tbb.shape)
+
+    out_file = 'FY3D+MERSI_TBB_GLOBAL_DISTRIBUTION.png'
+    title = 'FY3D+MERSI TBB GLOBAL DISTRIBUTION CH_24 20180630'
+
+    vmin = int(np.nanmin(tbb))
+    vmax = int(np.nanmax(tbb))
+
+    p = dv_map.dv_map()
+    p.easyplot(lat, lon, tbb,  markersize=1, marker='s', vmin=vmin, vmax=vmax)
+    p.title = title
+    p.savefig(out_file)
+    print '>>> {}'.format(out_file)
 
 
 def plot_map_project(latitude, longitude,
@@ -90,11 +115,9 @@ def plot_map_project(latitude, longitude,
     p.easyplot(latitude, longitude, count, vmin=vmin, vmax=vmax,
                ptype=ptype, markersize=markersize, marker=marker)
     p.title = title
-    p.add_landmark(lonlatlocation)
     p.savefig(out_file)
     print '>>> {}'.format(out_file)
 
 
 if __name__ == '__main__':
-    args = sys.argv[1:]
-    main(args[0], args[1])
+    main()
