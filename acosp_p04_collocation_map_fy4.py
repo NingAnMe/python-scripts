@@ -101,7 +101,7 @@ def main(ymd, dtype='TEST'):
         tbb_s2_channel = tbb_s2_channel[idx]
 
         lon_lat_new = fy4_lon_lat[index]
-        lon_channel_new = lon_lat_new[:, 0]
+        lon_channel_new = lon_lat_new[:, 0] - 104.7
         lat_channel_new = lon_lat_new[:, 1]
 
         shortsat1 = 'FY3D'
